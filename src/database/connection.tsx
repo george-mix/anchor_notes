@@ -8,11 +8,11 @@ import React, {
 import { Connection, createConnection } from "typeorm";
 import { ActivityIndicator } from "react-native";
 
-import NoteNodel from "./models/NoteModel";
-import NotesRepository from "./repositories/NotesRepository";
+import CollectionModel from "./models/CollectionModel";
+import CollectionsRepository from "./repositories/CollectionsRepository";
 
 interface DatabaseConnectionContextData {
-  notesRepository: NotesRepository;
+  collectionsRepository: CollectionsRepository;
 }
 
 const DatabaseConnectionContext = createContext<DatabaseConnectionContextData>(
@@ -27,7 +27,7 @@ export const DatabaseConnectionProvider: React.FC = ({ children }) => {
       type: "expo",
       database: "anchor_notes.db",
       driver: require("expo-sqlite"),
-      entities: [NoteNodel],
+      entities: [CollectionModel],
       synchronize: true,
     });
     setConnection(createdConnection);
@@ -46,7 +46,7 @@ export const DatabaseConnectionProvider: React.FC = ({ children }) => {
   return (
     <DatabaseConnectionContext.Provider
       value={{
-        notesRepository: new NotesRepository(connection),
+        collectionsRepository: new CollectionsRepository(connection),
       }}
     >
       {children}

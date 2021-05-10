@@ -1,10 +1,10 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("notes")
-export default class NoteModel {
+export default class CollectionModel {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
   @Column()
-  text: string;
+  name: string;
 }
