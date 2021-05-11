@@ -10,9 +10,12 @@ import { ActivityIndicator } from "react-native";
 
 import CollectionModel from "./models/CollectionModel";
 import CollectionsRepository from "./repositories/CollectionsRepository";
+import NoteModel from "./models/NoteModel";
+import NotesRepository from "./repositories/NoteRepository";
 
 interface DatabaseConnectionContextData {
   collectionsRepository: CollectionsRepository;
+  notesRepository: NotesRepository;
 }
 
 const DatabaseConnectionContext = createContext<DatabaseConnectionContextData>(
@@ -27,7 +30,7 @@ export const DatabaseConnectionProvider: React.FC = ({ children }) => {
       type: "expo",
       database: "anchor_notes.db",
       driver: require("expo-sqlite"),
-      entities: [CollectionModel],
+      entities: [CollectionModel, NoteModel],
       synchronize: true,
     });
     setConnection(createdConnection);
@@ -47,6 +50,7 @@ export const DatabaseConnectionProvider: React.FC = ({ children }) => {
     <DatabaseConnectionContext.Provider
       value={{
         collectionsRepository: new CollectionsRepository(connection),
+        notesRepository: new NotesRepository(connection),
       }}
     >
       {children}

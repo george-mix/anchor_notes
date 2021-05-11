@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { View, TextInput, Button, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import { useDatabaseConnection } from "../database/connection";
 
@@ -12,6 +13,7 @@ interface CollectionItem {
 
 const CollectionList: React.FC = () => {
   const { collectionsRepository } = useDatabaseConnection();
+  const navigation = useNavigation();
 
   const [newCollection, setNewCollection] = useState("");
   const [collections, setCollections] = useState<CollectionItem[]>([]);
@@ -51,6 +53,7 @@ const CollectionList: React.FC = () => {
         {collections.map((collection) => (
           <TouchableOpacity
             key={String(collection.id)}
+            onPress={() => navigation.navigate("Schema", { id: collection.id })}
             onLongPress={() => handleDeleteCollection(collection.id)}
           >
             <Collection name={collection.name} />
