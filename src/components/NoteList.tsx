@@ -1,8 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, TouchableOpacity, View, TextInput, Text } from "react-native";
+import { TouchableOpacity, View, Text } from "react-native";
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 
 import { useDatabaseConnection } from "../database/connection";
+
+import NameInput from "./shared-components/NameInput";
+import SaveButton from "./shared-components/SaveButton";
 
 type SchemaParamList = {
   Data: {
@@ -17,8 +20,8 @@ interface INoteItem {
 }
 
 const NoteList: React.FC = () => {
-  const navigation = useNavigation();
   const { notesRepository } = useDatabaseConnection();
+  const navigation = useNavigation();
 
   const [newNote, setNewNote] = useState("");
   const [notes, setNotes] = useState<INoteItem[]>([]);
@@ -41,8 +44,8 @@ const NoteList: React.FC = () => {
   return (
     <View>
       <View>
-        <TextInput value={newNote} onChangeText={setNewNote} />
-        <Button title="Create" onPress={handleCreateNote} />
+        <NameInput value={newNote} onChange={setNewNote} />
+        <SaveButton title="Create" onPress={handleCreateNote} />
       </View>
       <View>
         {notes.map((note) => (

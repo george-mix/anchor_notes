@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, TextInput, Button, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { useDatabaseConnection } from "../database/connection";
 
 import Collection from "./Collection";
+import NameInput from "./shared-components/NameInput";
+import SaveButton from "./shared-components/SaveButton";
 
 interface CollectionItem {
   id: number;
@@ -46,8 +48,8 @@ const CollectionList: React.FC = () => {
   return (
     <View>
       <View>
-        <TextInput value={newCollection} onChangeText={setNewCollection} />
-        <Button title="Create" onPress={handleCreateCollection} />
+        <NameInput value={newCollection} onChange={setNewCollection} />
+        <SaveButton title="Create" onPress={handleCreateCollection} />
       </View>
       <View>
         {collections.map((collection) => (

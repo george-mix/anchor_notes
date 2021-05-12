@@ -1,7 +1,9 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
-import { TextInput, View, Button } from "react-native";
+import { TextInput, View } from "react-native";
 
+import NameInput from "../components/shared-components/NameInput";
+import SaveButton from "../components/shared-components/SaveButton";
 import { useDatabaseConnection } from "../database/connection";
 
 type SchemaParamList = {
@@ -10,7 +12,7 @@ type SchemaParamList = {
   };
 };
 
-const NoteScreen = () => {
+const NoteScreen: React.FC = () => {
   const { notesRepository } = useDatabaseConnection();
   const [name, setName] = useState("");
   const [text, setText] = useState("");
@@ -37,13 +39,13 @@ const NoteScreen = () => {
 
   return (
     <View>
-      <TextInput value={name} onChangeText={setName} />
+      <NameInput value={name} onChange={setName} />
       <TextInput
         placeholder="Enter your note"
         value={text}
         onChangeText={setText}
       />
-      <Button title="Save" onPress={handleSave} />
+      <SaveButton title="Save" onPress={handleSave} />
     </View>
   );
 };
