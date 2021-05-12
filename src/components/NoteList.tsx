@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, TouchableOpacity, View, TextInput, Text } from "react-native";
-import { useRoute, RouteProp } from "@react-navigation/native";
+import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 
 import { useDatabaseConnection } from "../database/connection";
 
@@ -17,6 +17,7 @@ interface INoteItem {
 }
 
 const NoteList: React.FC = () => {
+  const navigation = useNavigation();
   const { notesRepository } = useDatabaseConnection();
 
   const [newNote, setNewNote] = useState("");
@@ -45,7 +46,10 @@ const NoteList: React.FC = () => {
       </View>
       <View>
         {notes.map((note) => (
-          <TouchableOpacity key={String(note.id)}>
+          <TouchableOpacity
+            key={String(note.id)}
+            onPress={() => navigation.navigate("Note", { id: note.id })}
+          >
             <Text>{note.name}</Text>
           </TouchableOpacity>
         ))}
