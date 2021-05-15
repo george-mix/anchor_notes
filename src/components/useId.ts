@@ -1,11 +1,11 @@
 import create from "zustand";
 
-type TestState = {
+type IdState = {
   id: number;
   newId: (id: number) => void;
 };
 
-export const useTest = create<TestState>((set) => ({
+export const useId = create<IdState>((set) => ({
   id: 0,
   newId: (id) => set({ id: id }),
 }));

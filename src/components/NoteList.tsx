@@ -6,7 +6,7 @@ import { useDatabaseConnection } from "../database/connection";
 
 import NameInput from "./ui/NameInput";
 import SaveButton from "./ui/SaveButton";
-import { useTest } from "./useTest";
+import { useId } from "./useId";
 
 type SchemaParamList = {
   Data: {
@@ -32,8 +32,8 @@ const NoteList: React.FC = () => {
   const [newNote, setNewNote] = useState("");
   const [newRoot, setNewRoot] = useState("");
 
-  const rootId = useTest((state) => state.id);
-  const newId = useTest((state) => state.newId);
+  const rootId = useId((state) => state.id);
+  const newId = useId((state) => state.newId);
 
   const [notes, setNotes] = useState<INoteItem[]>([]);
   const route = useRoute<RouteProp<SchemaParamList, "Data">>();
@@ -46,6 +46,7 @@ const NoteList: React.FC = () => {
     });
     notesRepository.getAllById(id).then(setNotes);
     setNewRoot("");
+    setRootModalVisible(false);
   }, [newRoot, notesRepository, id]);
 
   const handleCreateNote = useCallback(async () => {
@@ -62,6 +63,12 @@ const NoteList: React.FC = () => {
     setChildModalVisible(true);
     newId(noteId);
   };
+
+  const handleDelete = useCallback(async () => {
+    await notesRepository.deleteOne(rootId);
+    setNotes((current) => current.filter((note) => note.id !== rootId));
+    setChildModalVisible(false);
+  }, [notesRepository, rootId]);
 
   useEffect(() => {
     notesRepository.getAllById(id).then(setNotes);
@@ -100,6 +107,9 @@ const NoteList: React.FC = () => {
           <SaveButton title="Create" onPress={handleCreateNote} />
           <Pressable onPress={() => setChildModalVisible(false)}>
             <Text>Close Modal</Text>
+          </Pressable>
+          <Pressable onPress={handleDelete}>
+            <Text>Delete</Text>
           </Pressable>
         </View>
       </Modal>

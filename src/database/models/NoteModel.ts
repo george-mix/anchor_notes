@@ -30,7 +30,7 @@ export default class NoteModel {
   isRoot: boolean;
 
   @Column({ nullable: true })
-  parentId: number;
+  parentId: number | null;
   @ManyToOne("note", "children")
   @JoinColumn({ name: "parentId" })
   parent: NoteModel;

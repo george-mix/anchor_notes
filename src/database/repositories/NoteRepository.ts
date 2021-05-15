@@ -73,6 +73,18 @@ export default class NotesRepository {
   }
 
   public async deleteOne(id: number): Promise<void> {
+    const note = await this.ormRepository.findOne(id);
+    const parentId = note?.parentId;
+    const isRoot = note?.isRoot;
+    if (isRoot) {
+      await this.ormRepository.update(
+        { parentId: id },
+        { isRoot: true, parentId: null }
+      );
+    }
+    if (parentId) {
+      await this.ormRepository.update({ parentId: id }, { parentId: parentId });
+    }
     await this.ormRepository.delete(id);
   }
 
