@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { TouchableOpacity, View, Text } from "react-native";
+import { TouchableOpacity, View, Text, Pressable, Modal } from "react-native";
 import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 
 import { useDatabaseConnection } from "../database/connection";
 
-import NameInput from "./shared-components/NameInput";
-import SaveButton from "./shared-components/SaveButton";
+import NameInput from "./ui/NameInput";
+import SaveButton from "./ui/SaveButton";
+import { useTest } from "./useTest";
 
 type SchemaParamList = {
   Data: {
@@ -17,46 +18,91 @@ interface INoteItem {
   id: number;
   name: string;
   collectionId: number;
+  isRoot: boolean;
+  parentId: number | null;
 }
 
 const NoteList: React.FC = () => {
   const { notesRepository } = useDatabaseConnection();
   const navigation = useNavigation();
 
+  const [rootModalVisible, setRootModalVisible] = useState<boolean>(false);
+  const [childModalVisible, setChildModalVisible] = useState<boolean>(false);
+
   const [newNote, setNewNote] = useState("");
+  const [newRoot, setNewRoot] = useState("");
+
+  const rootId = useTest((state) => state.id);
+  const newId = useTest((state) => state.newId);
+
   const [notes, setNotes] = useState<INoteItem[]>([]);
   const route = useRoute<RouteProp<SchemaParamList, "Data">>();
+  const { id } = route.params;
+
+  const handleCreateRoot = useCallback(async () => {
+    await notesRepository.createRootNote({
+      name: newRoot,
+      collectionId: id,
+    });
+    notesRepository.getAllById(id).then(setNotes);
+    setNewRoot("");
+  }, [newRoot, notesRepository, id]);
 
   const handleCreateNote = useCallback(async () => {
-    const note = await notesRepository.create({
+    await notesRepository.createChildNote({
       name: newNote,
-      collectionId: route.params.id,
+      collectionId: id,
+      parentId: rootId,
     });
-    setNotes((current) => [...current, note]);
-
+    notesRepository.getAllById(id).then(setNotes);
     setNewNote("");
-  }, [newNote, notesRepository, route.params.id]);
+  }, [newNote, notesRepository, id, rootId]);
+
+  const handleLongPress = (noteId: number) => {
+    setChildModalVisible(true);
+    newId(noteId);
+  };
 
   useEffect(() => {
-    notesRepository.getAllById(route.params.id).then(setNotes);
-  }, [notesRepository, route.params.id]);
+    notesRepository.getAllById(id).then(setNotes);
+  }, [notesRepository, id]);
 
   return (
     <View>
-      <View>
-        <NameInput value={newNote} onChange={setNewNote} />
-        <SaveButton title="Create" onPress={handleCreateNote} />
-      </View>
+      <Pressable onPress={() => setRootModalVisible(true)}>
+        <Text>Show Modal</Text>
+      </Pressable>
+      <Modal visible={rootModalVisible}>
+        <View>
+          <NameInput value={newRoot} onChange={setNewRoot} />
+          <SaveButton title="Create" onPress={handleCreateRoot} />
+        </View>
+        <Pressable onPress={() => setRootModalVisible(false)}>
+          <Text>Close Modal</Text>
+        </Pressable>
+      </Modal>
       <View>
         {notes.map((note) => (
           <TouchableOpacity
             key={String(note.id)}
             onPress={() => navigation.navigate("Note", { id: note.id })}
+            onLongPress={() => handleLongPress(note.id)}
           >
+            <Text>{String(note.parentId)}</Text>
             <Text>{note.name}</Text>
+            <Text>{String(note.isRoot)}</Text>
           </TouchableOpacity>
         ))}
       </View>
+      <Modal visible={childModalVisible}>
+        <View>
+          <NameInput value={newNote} onChange={setNewNote} />
+          <SaveButton title="Create" onPress={handleCreateNote} />
+          <Pressable onPress={() => setChildModalVisible(false)}>
+            <Text>Close Modal</Text>
+          </Pressable>
+        </View>
+      </Modal>
     </View>
   );
 };

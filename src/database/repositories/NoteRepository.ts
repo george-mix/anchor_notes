@@ -1,10 +1,10 @@
 import { Connection, Repository } from "typeorm";
 
 interface ICreateNoteData {
-  id?: number;
   name: string;
-  text?: string | null;
   collectionId: number;
+  isRoot?: boolean;
+  parentId?: number;
 }
 
 interface IUpdateNoteData {
@@ -22,18 +22,31 @@ export default class NotesRepository {
     this.ormRepository = connection.getRepository(NoteModel);
   }
 
-  public async create({
+  public async createRootNote({
     name,
     collectionId,
-  }: ICreateNoteData): Promise<NoteModel> {
-    const note = this.ormRepository.create({
+  }: ICreateNoteData): Promise<void> {
+    const root = await this.ormRepository.create({
       name,
       collectionId,
     });
+    await this.ormRepository.save(root);
+    await this.ormRepository.update(root.id, {
+      isRoot: true,
+    });
+  }
 
-    await this.ormRepository.save(note);
-
-    return note;
+  public async createChildNote({
+    name,
+    collectionId,
+    parentId,
+  }: ICreateNoteData): Promise<void> {
+    const child = await this.ormRepository.create({
+      name,
+      collectionId,
+      parentId,
+    });
+    await this.ormRepository.save(child);
   }
 
   public async getAllById(id: number): Promise<NoteModel[]> {
@@ -59,7 +72,11 @@ export default class NotesRepository {
     return note;
   }
 
-  public async delete(id: number): Promise<void> {
+  public async deleteOne(id: number): Promise<void> {
     await this.ormRepository.delete(id);
+  }
+
+  public async deleteAllById(id: number): Promise<void> {
+    await this.ormRepository.delete({ collectionId: id });
   }
 }

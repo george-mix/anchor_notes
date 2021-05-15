@@ -5,8 +5,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useDatabaseConnection } from "../database/connection";
 
 import Collection from "./Collection";
-import NameInput from "./shared-components/NameInput";
-import SaveButton from "./shared-components/SaveButton";
+import NameInput from "./ui/NameInput";
+import SaveButton from "./ui/SaveButton";
 
 interface CollectionItem {
   id: number;
@@ -15,6 +15,7 @@ interface CollectionItem {
 
 const CollectionList: React.FC = () => {
   const { collectionsRepository } = useDatabaseConnection();
+  const { notesRepository } = useDatabaseConnection();
   const navigation = useNavigation();
 
   const [newCollection, setNewCollection] = useState("");
@@ -33,12 +34,13 @@ const CollectionList: React.FC = () => {
   const handleDeleteCollection = useCallback(
     async (id: number) => {
       await collectionsRepository.delete(id);
+      await notesRepository.deleteAllById(id);
 
       setCollections((current) =>
         current.filter((collection) => collection.id !== id)
       );
     },
-    [collectionsRepository]
+    [collectionsRepository, notesRepository]
   );
 
   useEffect(() => {

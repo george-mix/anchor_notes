@@ -3,6 +3,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
@@ -24,4 +25,16 @@ export default class NoteModel {
   @ManyToOne("collection", "notes")
   @JoinColumn({ name: "collectionId" })
   collection: Collection;
+
+  @Column({ default: false })
+  isRoot: boolean;
+
+  @Column({ nullable: true })
+  parentId: number;
+  @ManyToOne("note", "children")
+  @JoinColumn({ name: "parentId" })
+  parent: NoteModel;
+
+  @OneToMany("note", "parent")
+  children: NoteModel[];
 }

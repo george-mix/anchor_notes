@@ -2,8 +2,8 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
 import { TextInput, View } from "react-native";
 
-import NameInput from "../components/shared-components/NameInput";
-import SaveButton from "../components/shared-components/SaveButton";
+import NameInput from "../components/ui/NameInput";
+import SaveButton from "../components/ui/SaveButton";
 import { useDatabaseConnection } from "../database/connection";
 
 type SchemaParamList = {
