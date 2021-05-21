@@ -47,7 +47,7 @@ const shuffle = (array: IData[]) => {
   return array;
 };
 
-const objectMove = (object: any, from: number, to: number) => {
+const objectMove = (object: IPositions, from: number, to: number) => {
   "worklet";
   const newObject = { ...object };
 
@@ -66,7 +66,7 @@ const objectMove = (object: any, from: number, to: number) => {
 
 const listToObject = (list: IData[]) => {
   const values = Object.values(list);
-  const object: any = {};
+  const object: IPositions = {};
 
   for (let i = 0; i < values.length; i++) {
     object[values[i].id] = i;
@@ -88,7 +88,7 @@ type Prop = {
   name: string;
 };
 
-const Collection: React.FC<Prop> = ({ name }) => {
+export const Collection: React.FC<Prop> = ({ name }) => {
   return (
     <View
       style={{
@@ -110,15 +110,19 @@ const Collection: React.FC<Prop> = ({ name }) => {
   );
 };
 
+interface IPositions {
+  [key: string]: number;
+}
+
 interface IProps {
   id: number;
   name: string;
-  positions: Animated.SharedValue<any>;
+  positions: Animated.SharedValue<IPositions>;
   scrollY: Animated.SharedValue<number>;
   notesCount: number;
 }
 
-const MovableCollection: React.FC<IProps> = ({
+export const MovableCollection: React.FC<IProps> = ({
   id,
   name,
   positions,
@@ -232,6 +236,7 @@ export const TestFunction: React.FC = () => {
     <>
       <SafeAreaProvider>
         <SafeAreaView style={{ flex: 1 }}>
+          <Text>Hi</Text>
           <Animated.ScrollView
             ref={scrollViewRef}
             onScroll={handleScroll}
@@ -239,7 +244,7 @@ export const TestFunction: React.FC = () => {
             style={{
               flex: 1,
               position: "relative",
-              backgroundColor: "white",
+              backgroundColor: "black",
             }}
             contentContainerStyle={{
               height: NOTES.length * ITEM_HEIGHT,

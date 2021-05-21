@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 
 import CollectionList from "../components/CollectionList";
 import { TestFunction } from "../components/MonolitTest";
@@ -8,7 +8,10 @@ const HomeScreen: React.FC = () => {
   return (
     <View>
       <CollectionList />
-      <TestFunction />
+      <View>
+        <Text>Hello</Text>
+        <TestFunction />
+      </View>
     </View>
   );
 };
