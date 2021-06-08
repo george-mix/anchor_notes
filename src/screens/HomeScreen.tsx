@@ -1,14 +1,12 @@
 import React from "react";
 import { View } from "react-native";
 
-import CollectionList from "../components/CollectionList";
-import TestTree from "../components/TestTree";
+import CollectionList from "../components/collections/CollectionList";
 
 const HomeScreen: React.FC = () => {
   return (
     <View>
       <CollectionList />
-      <TestTree />
     </View>
   );
 };

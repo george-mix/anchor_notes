@@ -2,11 +2,11 @@ import React, { useState, useEffect, useCallback } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { useDatabaseConnection } from "../database/connection";
+import { useDatabaseConnection } from "../../database/connection";
+import NameInput from "../ui/NameInput";
+import SaveButton from "../ui/SaveButton";
 
 import Collection from "./Collection";
-import NameInput from "./ui/NameInput";
-import SaveButton from "./ui/SaveButton";
 
 interface CollectionItem {
   id: number;
