@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View } from "react-native";
 
 import CreateCollectionModal from "../components/modals/CreateCollectionModal";
-import OpenModalButton from "../ui/OpenModalButton";
+import OpenModalButton from "../components/OpenModalButton";
 
 const CollectionsScreen: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
