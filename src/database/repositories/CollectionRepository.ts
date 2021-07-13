@@ -22,4 +22,10 @@ export default class CollectionsRepository {
 
     return collection;
   }
+
+  public async getAll(): Promise<Collection[]> {
+    const collections = await this.ormRepository.find();
+
+    return collections;
+  }
 }

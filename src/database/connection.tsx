@@ -9,10 +9,10 @@ import { Connection, createConnection } from "typeorm";
 import { ActivityIndicator } from "react-native";
 
 import Collection from "./models/Collection";
-import Collections from "./repositories/Collections";
+import CollectionRepository from "./repositories/CollectionRepository";
 
 interface DatabaseConnectionContextData {
-  collectionsRepository: Collections;
+  collectionRepository: CollectionRepository;
 }
 
 const DatabaseConnectionContext = createContext<DatabaseConnectionContextData>(
@@ -48,7 +48,7 @@ export const DatabaseConnectionProvider: React.FC = ({ children }) => {
   return (
     <DatabaseConnectionContext.Provider
       value={{
-        collectionsRepository: new Collections(connection),
+        collectionRepository: new CollectionRepository(connection),
       }}
     >
       {children}
