@@ -10,7 +10,7 @@ interface ICreateCollectionProps {
 const CreateCollectionModal: React.FC<ICreateCollectionProps> = ({
   setModalOpen,
 }) => {
-  const { collectionsRepository } = useDatabaseConnection();
+  const { collectionRepository } = useDatabaseConnection();
 
   const collectionNameInput = useRef<TextInput>(null);
 
@@ -24,9 +24,10 @@ const CreateCollectionModal: React.FC<ICreateCollectionProps> = ({
   const handleSubmit = async () => {
     if (collectionName === "") {
       setIsError(true);
+    } else {
+      await collectionRepository.create({ name: collectionName });
+      setCollectionName("");
     }
-    await collectionsRepository.create({ name: collectionName });
-    setCollectionName("");
   };
 
   const handleClose = () => {

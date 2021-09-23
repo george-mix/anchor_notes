@@ -3,9 +3,9 @@ import { fireEvent, render } from "@testing-library/react-native";
 
 import CreateCollectionModal from "../CreateCollectionModal";
 
-test("input does not allow empty strings", async () => {
+test("input does not allow empty strings", () => {
   const setModalOpen = jest.fn();
-  const { getByPlaceholderText, getByText } = await render(
+  const { getByPlaceholderText, getByText } = render(
     <CreateCollectionModal setModalOpen={setModalOpen} />
   );
 

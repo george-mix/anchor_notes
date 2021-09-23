@@ -3,10 +3,11 @@ import { fireEvent, render } from "@testing-library/react-native";
 
 import CollectionsScreen from "../CollectionsScreen";
 
-test("collection name input appears on button press, disappears on close", async () => {
-  const { getByText, getByPlaceholderText, queryByText } = await render(
+test("collection name input appears on button press, disappears on close", () => {
+  const { getByText, getByPlaceholderText, queryAllByText } = render(
     <CollectionsScreen />
   );
+
   const addCollectionButton = getByText("+");
   fireEvent.press(addCollectionButton);
 
@@ -16,6 +17,6 @@ test("collection name input appears on button press, disappears on close", async
   const closeButon = getByText("close");
   fireEvent.press(closeButon);
 
-  const inputAfterClose = queryByText("Enter Collection Name");
-  expect(inputAfterClose).toBeNull();
+  const inputAfterClose = queryAllByText("Enter Collection Name");
+  expect(inputAfterClose).toHaveLength(0);
 });

@@ -1,5 +1,6 @@
 import { Connection, Repository } from "typeorm";
 
+import { ICollectionItem } from "../../utils/types/interfaces";
 import Collection from "../models/Collection";
 
 interface ICreateCollectionData {
@@ -23,7 +24,7 @@ export default class CollectionsRepository {
     return collection;
   }
 
-  public async getAll(): Promise<Collection[]> {
+  public async getAll(): Promise<ICollectionItem[]> {
     const collections = await this.ormRepository.find();
 
     return collections;
