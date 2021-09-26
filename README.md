@@ -1,2 +1,2 @@
-npm run start
-npm run android
+yarn start
+yarn android

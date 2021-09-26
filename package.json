@@ -21,7 +21,8 @@
     "react-native-safe-area-view": "^1.1.1",
     "react-native-screens": "^3.4.0",
     "react-native-sqlite-storage": "^5.0.0",
-    "typeorm": "^0.2.34"
+    "typeorm": "^0.2.34",
+    "zustand": "^3.5.10"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
