@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 import useCollections from "../../store/useCollections";
 
 import CollectionListItem from "./CollectionListItem";
 
 const CollectionList: React.FC = () => {
-  const collections = useCollections((state) => state.collections);
-  const getAllCollections = useCollections((state) => state.getAllCollections);
+  const { collections, getAllCollections, deleteCollection } = useCollections();
 
   useEffect(() => {
     getAllCollections();
@@ -16,7 +15,12 @@ const CollectionList: React.FC = () => {
   return (
     <View>
       {collections.map((collection) => (
-        <CollectionListItem key={collection.id} name={collection.name} />
+        <TouchableOpacity
+          key={String(collection.id)}
+          onLongPress={() => deleteCollection(collection.id)}
+        >
+          <CollectionListItem name={collection.name} />
+        </TouchableOpacity>
       ))}
     </View>
   );

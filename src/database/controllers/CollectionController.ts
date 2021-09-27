@@ -24,3 +24,9 @@ export const createCollection = async ({ name }: ICreateCollectionData) => {
     return [];
   }
 };
+
+export const deleteCollection = async (id: number) => {
+  await getRepository(Collection).delete(id);
+  const result = await getRepository(Collection).find();
+  return result ? result : [];
+};

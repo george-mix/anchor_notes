@@ -12,7 +12,7 @@ const CreateCollectionModal: React.FC<ICreateCollectionProps> = ({
 }) => {
   const [collectionName, setCollectionName] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
-  const createCollection = useCollections((state) => state.createCollection);
+  const { createCollection } = useCollections();
 
   const collectionNameInput = useRef<TextInput>(null);
 
