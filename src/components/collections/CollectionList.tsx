@@ -7,7 +7,7 @@ import CollectionListItem from "./CollectionListItem";
 
 const CollectionList: React.FC = () => {
   const collections = useCollections((state) => state.collections);
-  const getAllCollections = useCollections((state) => state.getAll);
+  const getAllCollections = useCollections((state) => state.getAllCollections);
 
   useEffect(() => {
     getAllCollections();

@@ -1,7 +1,7 @@
 import React, { Dispatch, useRef, useState } from "react";
 import { Text, Button, TextInput, Modal } from "react-native";
 
-import { useDatabaseConnection } from "../../database/connection";
+import useCollections from "../../store/useCollections";
 
 interface ICreateCollectionProps {
   setModalOpen: Dispatch<React.SetStateAction<boolean>>;
@@ -10,12 +10,11 @@ interface ICreateCollectionProps {
 const CreateCollectionModal: React.FC<ICreateCollectionProps> = ({
   setModalOpen,
 }) => {
-  const { collectionRepository } = useDatabaseConnection();
-
-  const collectionNameInput = useRef<TextInput>(null);
-
   const [collectionName, setCollectionName] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
+  const createCollection = useCollections((state) => state.createCollection);
+
+  const collectionNameInput = useRef<TextInput>(null);
 
   const handleMount = () => {
     collectionNameInput.current?.focus();
@@ -25,8 +24,9 @@ const CreateCollectionModal: React.FC<ICreateCollectionProps> = ({
     if (collectionName === "") {
       setIsError(true);
     } else {
-      await collectionRepository.create({ name: collectionName });
+      createCollection(collectionName);
       setCollectionName("");
+      handleClose();
     }
   };
 
