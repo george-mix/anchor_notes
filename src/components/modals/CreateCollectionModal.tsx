@@ -1,8 +1,6 @@
 import React, { Dispatch, useRef, useState } from "react";
 import { Text, Button, TextInput, Modal } from "react-native";
 
-import useCollections from "../../store/useCollections";
-
 interface ICreateCollectionProps {
   setModalOpen: Dispatch<React.SetStateAction<boolean>>;
 }
@@ -12,7 +10,6 @@ const CreateCollectionModal: React.FC<ICreateCollectionProps> = ({
 }) => {
   const [collectionName, setCollectionName] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
-  const { createCollection } = useCollections();
 
   const collectionNameInput = useRef<TextInput>(null);
 
@@ -24,7 +21,6 @@ const CreateCollectionModal: React.FC<ICreateCollectionProps> = ({
     if (collectionName === "") {
       setIsError(true);
     } else {
-      createCollection(collectionName);
       setCollectionName("");
       handleClose();
     }

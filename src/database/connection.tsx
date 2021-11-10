@@ -32,7 +32,9 @@ export const DatabaseConnectionProvider: React.FC = ({ children }) => {
         synchronize: true,
       });
       setConnection(createdConnection);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   useEffect(() => {

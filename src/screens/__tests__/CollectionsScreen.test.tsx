@@ -1,11 +1,11 @@
 import React from "react";
 import { fireEvent, render } from "@testing-library/react-native";
 
-import CollectionsScreen from "../CollectionsScreen";
+import CollectionScreen from "../CollectionScreen";
 
 test("collection name input appears on button press, disappears on close", () => {
   const { getByText, getByPlaceholderText, queryAllByText } = render(
-    <CollectionsScreen />
+    <CollectionScreen />
   );
 
   const addCollectionButton = getByText("+");

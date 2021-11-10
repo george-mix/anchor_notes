@@ -7,8 +7,13 @@ interface ICreateCollectionData {
 }
 
 export const getAll = async () => {
-  const result = await getRepository(Collection).find();
-  return result ? result : [];
+  try {
+    const result = await getRepository(Collection).find();
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw new Error("test");
+  }
 };
 
 export const createCollection = async ({ name }: ICreateCollectionData) => {
