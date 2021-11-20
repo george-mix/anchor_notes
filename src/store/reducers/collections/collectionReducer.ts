@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 
-import * as actionTypes from "./collectionActionsTypes";
+import * as actionTypes from "./collectionActionTypes";
 
 const initialCollectionState = {
   loading: false,
@@ -52,6 +52,29 @@ export default function collectionReducer(
     }
 
     case actionTypes.CREATE_COLLECTION_FAILED: {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    }
+
+    case actionTypes.DELETE_COLLECTION_REQUESTED: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+
+    case actionTypes.DELETE_COLLECTION_SUCCEEDED: {
+      return {
+        ...state,
+        loading: false,
+        data: action.payload,
+      };
+    }
+
+    case actionTypes.DELETE_COLLECTION_FAILED: {
       return {
         ...state,
         loading: false,

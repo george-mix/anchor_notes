@@ -6,13 +6,17 @@ interface ICreateCollectionData {
   name: string;
 }
 
+interface IDeleteCollectionData {
+  id: number;
+}
+
 export const getAll = async () => {
   try {
     const result = await getRepository(Collection).find();
     return result;
   } catch (error) {
     console.log(error);
-    throw new Error("test");
+    return [];
   }
 };
 
@@ -30,8 +34,13 @@ export const createCollection = async ({ name }: ICreateCollectionData) => {
   }
 };
 
-export const deleteCollection = async (id: number) => {
-  await getRepository(Collection).delete(id);
-  const result = await getRepository(Collection).find();
-  return result ? result : [];
+export const deleteCollection = async ({ id }: IDeleteCollectionData) => {
+  try {
+    await getRepository(Collection).delete(id);
+    const result = await getRepository(Collection).find();
+    return result ? result : [];
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
 };

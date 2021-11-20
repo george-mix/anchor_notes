@@ -2,7 +2,10 @@ import React, { useEffect } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
-import { loadCollectionsRequested } from "../../store/reducers/collections/collectionActions";
+import {
+  deleteCollectionRequested,
+  loadCollectionsRequested,
+} from "../../store/reducers/collections/collectionActions";
 import { selectCollections } from "../../store/reducers/collections/collectionSelector";
 
 import CollectionListItem from "./CollectionListItem";
@@ -16,10 +19,17 @@ const CollectionList: React.FC = () => {
     dispatch(loadCollectionsRequested());
   }, [dispatch]);
 
+  const handleDeleteCollection = (id: number) => {
+    dispatch(deleteCollectionRequested(id));
+  };
+
   return (
     <View>
       {collections?.data.map((collection) => (
-        <TouchableOpacity key={String(collection.id)}>
+        <TouchableOpacity
+          key={String(collection.id)}
+          onLongPress={() => handleDeleteCollection(collection.id)}
+        >
           <CollectionListItem name={collection.name} />
         </TouchableOpacity>
       ))}

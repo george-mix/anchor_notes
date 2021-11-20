@@ -2,10 +2,11 @@ import { call, put, takeEvery } from "redux-saga/effects";
 
 import {
   createCollection,
+  deleteCollection,
   getAll,
 } from "../../../database/controllers/CollectionController";
 import CollectionModel from "../../../database/models/Collection";
-import * as actionTypes from "../../reducers/collections/collectionActionsTypes";
+import * as actionTypes from "../../reducers/collections/collectionActionTypes";
 
 function* getCollectionsAction() {
   try {
@@ -38,10 +39,33 @@ function* createCollectionAction({
   }
 }
 
+function* deleteCollectionAction({
+  payload,
+}: {
+  type: typeof actionTypes.DELETE_COLLECTION_REQUESTED;
+  payload: number;
+}) {
+  try {
+    const collections: CollectionModel[] = yield call(deleteCollection, {
+      id: payload,
+    });
+    yield put({
+      type: actionTypes.DELETE_COLLECTION_SUCCEEDED,
+      payload: collections,
+    });
+  } catch (error) {
+    yield put({ type: actionTypes.DELETE_COLLECTION_FAILED, payload: error });
+  }
+}
+
 export default function* collectionSaga() {
   yield takeEvery(actionTypes.LOAD_COLLECTIONS_REQUESTED, getCollectionsAction);
   yield takeEvery(
     actionTypes.CREATE_COLLECTION_REQUESTED,
     createCollectionAction
+  );
+  yield takeEvery(
+    actionTypes.DELETE_COLLECTION_REQUESTED,
+    deleteCollectionAction
   );
 }
