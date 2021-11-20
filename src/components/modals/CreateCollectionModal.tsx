@@ -1,5 +1,8 @@
 import React, { Dispatch, useRef, useState } from "react";
 import { Text, Button, TextInput, Modal } from "react-native";
+import { useDispatch } from "react-redux";
+
+import { createCollectionRequested } from "../../store/reducers/collections/collectionActions";
 
 interface ICreateCollectionProps {
   setModalOpen: Dispatch<React.SetStateAction<boolean>>;
@@ -11,6 +14,8 @@ const CreateCollectionModal: React.FC<ICreateCollectionProps> = ({
   const [collectionName, setCollectionName] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
 
+  const dispatch = useDispatch();
+
   const collectionNameInput = useRef<TextInput>(null);
 
   const handleMount = () => {
@@ -21,6 +26,7 @@ const CreateCollectionModal: React.FC<ICreateCollectionProps> = ({
     if (collectionName === "") {
       setIsError(true);
     } else {
+      dispatch(createCollectionRequested(collectionName));
       setCollectionName("");
       handleClose();
     }

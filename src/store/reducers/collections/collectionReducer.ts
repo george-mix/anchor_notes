@@ -1,10 +1,6 @@
 import { AnyAction } from "redux";
 
-import {
-  LOAD_COLLECTIONS_FAILED,
-  LOAD_COLLECTIONS_REQUESTED,
-  LOAD_COLLECTIONS_SUCCEEDED,
-} from "./collectionActions";
+import * as actionTypes from "./collectionActionsTypes";
 
 const initialCollectionState = {
   loading: false,
@@ -17,14 +13,14 @@ export default function collectionReducer(
   action: AnyAction
 ) {
   switch (action.type) {
-    case LOAD_COLLECTIONS_REQUESTED: {
+    case actionTypes.LOAD_COLLECTIONS_REQUESTED: {
       return {
         ...state,
         loading: true,
       };
     }
 
-    case LOAD_COLLECTIONS_SUCCEEDED: {
+    case actionTypes.LOAD_COLLECTIONS_SUCCEEDED: {
       return {
         ...state,
         loading: false,
@@ -32,13 +28,37 @@ export default function collectionReducer(
       };
     }
 
-    case LOAD_COLLECTIONS_FAILED: {
+    case actionTypes.LOAD_COLLECTIONS_FAILED: {
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
     }
+
+    case actionTypes.CREATE_COLLECTION_REQUESTED: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+
+    case actionTypes.CREATE_COLLECTION_SUCCEEDED: {
+      return {
+        ...state,
+        loading: false,
+        data: action.payload,
+      };
+    }
+
+    case actionTypes.CREATE_COLLECTION_FAILED: {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    }
+
     default:
       return state;
   }

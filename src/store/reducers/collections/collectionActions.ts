@@ -1,3 +1,10 @@
-export const LOAD_COLLECTIONS_REQUESTED = "LOAD_COLLECTIONS";
-export const LOAD_COLLECTIONS_SUCCEEDED = "LOAD_COLLECTIONS_SUCCEEDED";
-export const LOAD_COLLECTIONS_FAILED = "LOAD_COLLECTIONS_FAILED";
+import * as collectionActionsTypes from "./collectionActionsTypes";
+
+export const loadCollectionsRequested = () => ({
+  type: collectionActionsTypes.LOAD_COLLECTIONS_REQUESTED,
+});
+
+export const createCollectionRequested = (name: string) => ({
+  type: collectionActionsTypes.CREATE_COLLECTION_REQUESTED,
+  payload: name,
+});
